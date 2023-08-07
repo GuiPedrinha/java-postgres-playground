@@ -6,15 +6,18 @@ public class AppArrays {
 
     public static void main(String[] args) {
         
-        double vetor1[] = {1, 2, 3, 4}; // inicializar defindindo valor;
+        // inicializar defindindo valor;
+        double vetor1[] = {1, 2, 3, 4};
         double vetor2[] = {5, 25, 35, 45};
 
-        vetor2 = vetor1; // p funiconar precisam ser do mesmo tipo. diferente das var primitivas;
+        // p funiconar precisam ser do mesmo tipo. diferente das var primitivas;
+        vetor2 = vetor1; 
 
 
         System.out.println(Arrays.toString(vetor2));
 
-        int vetorInt[] = new int[4]; // inicializar sem definir valor, so tamanho;
+        // inicializar sem definir valor, so tamanho;
+        int vetorInt[] = new int[4]; 
 
         // matriz de 2 linhas e 3 colunas;
         double matriz[][] = { {2, 3, 4}, {5, 5, 5} };
@@ -34,16 +37,17 @@ public class AppArrays {
 
         double matrizFor[][] = new double[3][4];
 
+        //fori ja da autocomplete na estrutura completa do for;
         for (int i = 0; i < matrizFor.length; i++) {
             for (int j = 0; j < matrizFor.length; j++) {
                 matrizFor[i][j] = (i * matrizFor.length + j) * 10;
-        }
+            }
        }
 
         for (int i = 0; i < matrizFor.length; i++) {
             for (int j = 0; j < matrizFor.length; j++) {
                 System.out.print(matrizFor[i][j] + " "); // nao pode ser print ln pq se imprime tudo como se fosse inuca coluna
-         }
+            }
          System.out.println();//pula linha ao fim das colunas;
         }
 

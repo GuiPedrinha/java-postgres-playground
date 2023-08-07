@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class AppScanner {
     public static void main(String[] args) {
 
-        Cliente cliente1 = new Cliente();// instaciana de um novo objetivo do tipo cliente
+        // instaciana de um novo objetivo do tipo cliente;
+        Cliente cliente1 = new Cliente();
 
         //Usando a classe scanner com parametro system.in para captura entrada padrao que é o teclado;
         // quando chamado ele fica esperando o usuario digitar;

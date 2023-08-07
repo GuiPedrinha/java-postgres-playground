@@ -39,7 +39,7 @@ public class Cliente {
     public Cliente(String nome, double renda, char sexo){
 
         // OBRIGATORIO SER A PRIMEIRA LINHA;
-        //assim se chama construtor dentro de construtor, se diferenciam pelos parametros colocados nos this. sem parametro chama o constr. sem parametro;
+        //assim se chama um construtor dentro de outro construtor, se diferenciam pelos parametros colocados nos this. sem parametro chama o constr. sem parametro;
         this(); 
         System.out.println("\n" + "criando cliente com construtor COM parametro");
 
@@ -67,7 +67,7 @@ public class Cliente {
     public void setNome(String nome) {
         if(nome.isBlank()){
             System.out.println("O nome é obrigatorio.");
-        }else this.nome = nome.toUpperCase().trim();;
+        }else this.nome = nome.toUpperCase().trim();
     }
     
     public double getRenda(){ 
@@ -93,7 +93,7 @@ public class Cliente {
         if(sexo == 'M' || sexo == 'F'){
             this.sexo = sexo;
         }
-        else System.out.println("Escreva M ou F");
+        else System.out.println("Seco incompativel! Escreva M ou F");
     };
 
     public void setanoNascimento(int anoNascimento){
