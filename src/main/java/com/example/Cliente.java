@@ -100,4 +100,9 @@ public class Cliente {
         this.anoNascimento = anoNascimento;
     };
 
+    // essa é a forma de ser imprimir um objeto. precisa dizer oqe vai ser impresso
+    public String toString(){
+        return " Cliente: " + nome + " Ano de nascimento: " + anoNascimento + " CPF: " + cpf;
+    }
+
 }

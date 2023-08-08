@@ -27,6 +27,9 @@ public class AppArrays {
         matriz[1][2] = 99;
         System.out.println(Arrays.toString(matriz[1]));// Printa toda a linha 1 da matriz;
 
+        matriz[0][0] = 100;
+        System.out.println(Arrays.toString(matriz[0]));// Printa toda a linha 1 da matriz;
+
         //mudar linha 1 toda;
        // matriz[1] = {1,2,3}; isso so funciona na declaracao, nao pra atualizar valor;
        matriz[1] = new double[]{1,2,3}; //adicionando um novo vetor a linha 1 da matriz;
