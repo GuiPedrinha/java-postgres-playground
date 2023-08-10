@@ -6,10 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AppMeuBD {
+    //atributos;
     private static final String PASSWORD = "";
     private static final String USERNAME = "gitpod";
     private static final String JDBC_URL = "jdbc:postgresql://localhost/postgres";
 
+    //main;
     public static void main(String[] args) {
         new AppMeuBD();
     }
@@ -26,7 +28,7 @@ public class AppMeuBD {
 
 
 
-
+    //metodos;
     private void listarCidades(Connection conn) {
         Statement statement = null;
         try{
