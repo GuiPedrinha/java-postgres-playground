@@ -55,19 +55,28 @@ public class AppBdclean {
 private void listaDadosTabela(Connection conn, String tabela) {
         var sql = "select * from " + tabela;
         System.out.printf("Query: %s \n", sql);
+        System.out.println();
 
         try {
             var statement = conn.createStatement();
             var result = statement.executeQuery(sql);
 
+            var metadata = result.getMetaData();
+            int colunas = metadata.getColumnCount();
+
+            //printando nome das colunas; LEMBRAR i começa em 1 no SQL;
+            for (int i = 1; i < colunas; i++) {
+                System.out.printf("%-25s ", metadata.getColumnName(i));
+            }
+            System.out.println();
+
             // precisa de for pq vamos printar todas as colunas de cada linha;
             while (result.next()) {
                 // devolve o numero de colunas de cada linha pra usar dentro do for;
-                int colunas = result.getMetaData().getColumnCount();
                 // ** no sql i começa com 1 e nao com zero, pq é indice de coluna;
                 for (int i = 1; i < colunas; i++) {
                     //trazer tudo em string so pra visualizar as tabelas, pela getString(index);
-                    System.out.printf("%s | ", result.getString(i));
+                    System.out.printf("%-25s ", result.getString(i));
                 }
                 System.out.println();
             }
