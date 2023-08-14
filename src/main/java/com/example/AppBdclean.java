@@ -25,7 +25,7 @@ public class AppBdclean {
         try (var conn =  getConnection()){
             carregarDriverJDBC(conn);
             listaEstados(conn);
-            localizarEstado("TO");
+            localizarEstado(conn, "TO");
         } catch (SQLException e) {
             //unico erro que o construc vai ter ciencia é o de conexao;
             // os outros ainda sao tratados em quem chamar o listarEstados;
@@ -33,7 +33,25 @@ public class AppBdclean {
         }
     }
 
-  private void localizarEstado(String uf) {
+  private void localizarEstado(Connection conn, String uf){
+        try {
+            String sql = "select * from estado where uf = ?";
+            // nao usa mais o createStatement, usar o prepareStatement pq recebe um sql como parametro;
+            var statement = conn.prepareStatement(sql);
+            //setString, pq uf é string, para atribuir o valor de ?;
+            // atribuindo a string uf para o parametro ? na posicao 1, que é o primeiro que aparece;
+            statement.setString(1, uf);
+            // usando prepareStatement o executeQuery nao recebe o sql nos parametros;
+            var result = statement.executeQuery();
+            System.out.printf("Query: %s \n", sql);
+            if(result.next()) {
+                System.out.printf("Estado localizado: id: %d nome: %s UF: %s \n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Comando SQL incorreto");
+        }
+        
+
     }
 
   private void listaEstados(Connection conn) {
@@ -52,6 +70,7 @@ public class AppBdclean {
             while (result.next()) {
             System.out.printf("Id: %d Nome: %s UF: %s \n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
             }
+            System.out.println();
         //tratamento diferenciando erro de conexao com erro de sintaxe da consulta sql;    
         } catch (SQLException e) {
              System.err.println(" Erro ao realizar o comando query sql ");
