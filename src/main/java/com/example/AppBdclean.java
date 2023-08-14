@@ -26,6 +26,9 @@ public class AppBdclean {
             carregarDriverJDBC(conn);
             listaEstados(conn);
             localizarEstado(conn, "TO");
+            //listando colunas da tabela cliente;
+            listaDadosTabela(conn, "funcionario");
+            listaTabelas(conn);
         } catch (SQLException e) {
             //unico erro que o construc vai ter ciencia é o de conexao;
             // os outros ainda sao tratados em quem chamar o listarEstados;
@@ -33,7 +36,49 @@ public class AppBdclean {
         }
     }
 
-  private void localizarEstado(Connection conn, String uf){
+  private void listaTabelas(Connection conn) {
+        var sql = "SELECT table_name FROM information_schema.tables WHERE table_schema='public'";
+        try {
+            var statement = conn.createStatement();
+            var result = statement.executeQuery(sql);
+
+            System.out.printf("%s \n", sql);
+            while (result.next()) {
+                System.out.printf("%s \n", result.getString("table_name"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro de consulta SQL " + e.getMessage());
+        }
+
+    }
+
+private void listaDadosTabela(Connection conn, String tabela) {
+        var sql = "select * from " + tabela;
+        System.out.printf("Query: %s \n", sql);
+
+        try {
+            var statement = conn.createStatement();
+            var result = statement.executeQuery(sql);
+
+            // precisa de for pq vamos printar todas as colunas de cada linha;
+            while (result.next()) {
+                // devolve o numero de colunas de cada linha pra usar dentro do for;
+                int colunas = result.getMetaData().getColumnCount();
+                // ** no sql i começa com 1 e nao com zero, pq é indice de coluna;
+                for (int i = 1; i < colunas; i++) {
+                    //trazer tudo em string so pra visualizar as tabelas, pela getString(index);
+                    System.out.printf("%s | ", result.getString(i));
+                }
+                System.out.println();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erro de consulta SQL: " + e.getMessage());
+        }
+        System.out.println();
+    }
+
+private void localizarEstado(Connection conn, String uf){
         try {
             String sql = "select * from estado where uf = ?";
             // nao usa mais o createStatement, usar o prepareStatement pq recebe um sql como parametro;
@@ -50,7 +95,8 @@ public class AppBdclean {
         } catch (SQLException e) {
             System.err.println("Comando SQL incorreto");
         }
-        
+        // pulando linha;
+        System.out.println();
 
     }
 
