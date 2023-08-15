@@ -31,15 +31,18 @@ public class AppBdclean {
             //instanciando as classes produto e marca;
             var marca = new Marca();
             // vai ser da marca de id 1;
-            marca.setId(1L); //L so pra dizer que n é int, é Long; n precisa nome pra add na tabela produto;
+            marca.setId(4L); //L so pra dizer que n é int, é Long; n precisa nome pra add na tabela produto;
             var produto = new Produto();
+            produto.setId(206L);
             produto.setMarca(marca);
-            produto.setNome("AK-47");
-            produto.setValor(23000.00);
+            produto.setNome("RPG");
+            produto.setValor(9990.00);
 
-            inserirProduto(conn, produto);
+            //inserirProduto(conn, produto);
 
-            excluirProduto(conn, 202L);
+            alterarProduto(conn, produto);
+
+            //excluirProduto(conn, 208L);
 
             //listando colunas da tabela cliente;
             listaDadosTabela(conn, "produto");
@@ -50,6 +53,24 @@ public class AppBdclean {
             // os outros ainda sao tratados em quem chamar o listarEstados;
                 System.err.println(" Nao foi possivel conectar ao banco de dados " + e.getMessage());
         }
+    }
+
+    private void alterarProduto(Connection conn, Produto produto) {
+        //tem que ter id no produto;
+        String sql = "UPDATE produto SET nome = ?, marca_id = ?, valor = ? WHERE id = ?";
+            try {
+                var statement = conn.prepareStatement(sql);
+                //setando o valor dos parametros ? ;
+                statement.setString(1, produto.getNome());
+                statement.setLong(2, produto.getMarca().getId());
+                statement.setDouble(3, produto.getValor());
+                statement.setLong(4, produto.getId());
+
+                //executando statement;
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                System.err.println("Comando SQL incorreto");
+            }
     }
 
     private void excluirProduto(Connection conn, long id) {
@@ -63,7 +84,12 @@ public class AppBdclean {
             statement.setLong(1, id);
 
             //executando DML;
-            statement.executeUpdate();
+            // executeUpdate retorna tbm o numero de linhas que foram afetadas;
+            // como estamos excluindo so 1 produto vai alterar um. usar isso pra ter msgs de sucesso;
+            if(statement.executeUpdate() == 1)
+                System.out.println("Produto excluido com sucesso");
+            else System.out.println("Produto nao localizado no banco"); 
+            System.out.println();
 
 
         } catch (SQLException e) {
@@ -90,7 +116,11 @@ public class AppBdclean {
                 //tudo setado agora executar; mas nao com executeQuery e sim com executeUpdate;
                 //executeUpdate serve para comandos DATA MANIPULATION LANG = INSERT UPDATE DELETE;
                 //como usou o conn.prepareStatement(sql) nao vai paramentro dentro do statemente.executeUpdate();
-                statement.executeUpdate();
+                if(statement.executeUpdate() == 1)
+                    System.out.println("Produto inserido com sucesso!");
+                else System.out.println("O poduto nao foi inserido.");
+                System.out.println();
+                
             } catch (SQLException e) {
                 System.err.println("Comando SQL incorreto");
             }
