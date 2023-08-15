@@ -26,9 +26,23 @@ public class AppBdclean {
             carregarDriverJDBC(conn);
             listaEstados(conn);
             localizarEstado(conn, "TO");
+
+            //inserir produto na tabela;
+            //instanciando as classes produto e marca;
+            var marca = new Marca();
+            // vai ser da marca de id 1;
+            marca.setId(1L); //L so pra dizer que n é int, é Long; n precisa nome pra add na tabela produto;
+            var produto = new Produto();
+            produto.setMarca(marca);
+            produto.setNome("AK-47");
+            produto.setValor(23000.00);
+
+            inserirProduto(conn, produto);
+
             //listando colunas da tabela cliente;
-            listaDadosTabela(conn, "funcionario");
+            listaDadosTabela(conn, "produto");
             listaTabelas(conn);
+
         } catch (SQLException e) {
             //unico erro que o construc vai ter ciencia é o de conexao;
             // os outros ainda sao tratados em quem chamar o listarEstados;
@@ -36,7 +50,31 @@ public class AppBdclean {
         }
     }
 
-  private void listaTabelas(Connection conn) {
+  private void inserirProduto(Connection conn, Produto produto) {
+
+        // em objetos nao se usa o nome com underline tipo marca_id;
+        //cria-se um atributo do tipo Marca marca e ai sim seta o id dentro desse novo obj marca;
+        //diferente do nome que vai no sql que é o nome da coluna msm do banco; sendo marca_id;
+        //marca_id equivale a produto.getMarca().getId();
+        String sql = "INSERT INTO produto (nome, marca_id, valor) VALUES (?, ?, ?)";
+        try {
+            var statement = conn.prepareStatement(sql);
+            //setando o valor das variaveis;
+            statement.setString(1, produto.getNome());
+            statement.setLong(2, produto.getMarca().getId());
+            statement.setDouble(3, produto.getValor());
+
+            //tudo setado agora executar; mas nao com executeQuery e sim com executeUpdate;
+            //executeUpdate serve para comandos DATA MANIPULATION LANG = INSERT UPDATE DELETE;
+            //como usou o conn.prepareStatement(sql) nao vai paramentro dentro do statemente.executeUpdate();
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Comando SQL incorreto");
+        }
+
+    }
+
+private void listaTabelas(Connection conn) {
         var sql = "SELECT table_name FROM information_schema.tables WHERE table_schema='public'";
         try {
             var statement = conn.createStatement();
@@ -53,28 +91,37 @@ public class AppBdclean {
     }
 
 private void listaDadosTabela(Connection conn, String tabela) {
+        // aqui pode concatenar oq nao é dado inserido por usuario;
         var sql = "select * from " + tabela;
         System.out.printf("Query: %s \n", sql);
         System.out.println();
 
         try {
+            // como nao teve ? no sql ,usar o conn.createStatement normalmente, passa sql como parametro pro execute;
             var statement = conn.createStatement();
             var result = statement.executeQuery(sql);
 
+            //criado para simplificar e chamar so uma vez;
+            //result.getMetaData.getColumCount e name;
             var metadata = result.getMetaData();
             int colunas = metadata.getColumnCount();
 
-            //printando nome das colunas; LEMBRAR i começa em 1 no SQL;
-            for (int i = 1; i < colunas; i++) {
+            System.out.println();
+            System.out.printf("A contagem de colunas da tabela %s é: %d", tabela, colunas);
+            System.out.println();
+
+            // *** printando nome das colunas; LEMBRAR i começa em 1 no SQL *** ;
+            for (int i = 1; i <= colunas; i++) {
                 System.out.printf("%-25s ", metadata.getColumnName(i));
             }
             System.out.println();
 
             // precisa de for pq vamos printar todas as colunas de cada linha;
+            // result.next() vai p/ cada linha e o for pra cada coluna na linha;
             while (result.next()) {
                 // devolve o numero de colunas de cada linha pra usar dentro do for;
                 // ** no sql i começa com 1 e nao com zero, pq é indice de coluna;
-                for (int i = 1; i < colunas; i++) {
+                for (int i = 1; i <= colunas; i++) {
                     //trazer tudo em string so pra visualizar as tabelas, pela getString(index);
                     System.out.printf("%-25s ", result.getString(i));
                 }
