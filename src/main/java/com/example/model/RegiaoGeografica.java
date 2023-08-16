@@ -1,10 +1,9 @@
-package com.example;
+package com.example.model;
 
-public class Marca {
+public class RegiaoGeografica {
     //atributos;
     private Long id;
     private String nome;
-    
 
     //construtor;
 
@@ -21,4 +20,5 @@ public class Marca {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
 }

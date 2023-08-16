@@ -3,6 +3,8 @@ package com.example;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.model.Cliente;
+
 public class AppListas {
     public static void main(String[] args) {
         

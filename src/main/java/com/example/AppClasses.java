@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.model.Cliente;
 
 public class AppClasses {
     public static void main(String[] args) {

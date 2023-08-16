@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.model.Eleitor;
+
 public class AppVerificaEleitor {
     
     

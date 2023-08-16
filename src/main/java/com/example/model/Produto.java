@@ -1,4 +1,4 @@
-package com.example;
+package com.example.model;
 
 // classe produto criada pra poder inserir um objeto produto dentro do banco;
 
