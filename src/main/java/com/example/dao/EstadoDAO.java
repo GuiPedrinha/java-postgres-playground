@@ -97,10 +97,53 @@ public class EstadoDAO {
         }
     }
 
-    public void atualizar() {
+    public void alterar(Estado estado) {
+        String sql = "UPDATE estado SET nome = ?, uf = ?, regiao_id = ?, area_km2 = ?, populacao = ? WHERE id = ?";
+        try {
+            //preparando statement;
+            var statement = conn.prepareStatement(sql);
+
+            //setando parametros sql;
+            statement.setString(1, estado.getNome());
+            statement.setString(2, estado.getUf());
+            statement.setLong(3, estado.getRegiao().getId());
+            statement.setInt(4, 999);
+            statement.setInt(5, 5600);
+            statement.setLong(6, estado.getId());
+
+            //executando;
+        if (statement.executeUpdate() == 1) {
+            System.out.println("Estado alterado com sucesso.");
+        } else System.out.println("O estado nao pode ser alterado");
+
+
+        } catch (SQLException e) {
+            System.err.println("Comando SQL incorreto (alterar estado)");
+            System.out.println();
+        }
     }
 
-    public void excluir() {
+    public void excluir(Estado estado) {
+        String sql = "DELETE FROM estado WHERE id = ?";
+
+        try {
+            //preparar statement;
+            var statement = conn.prepareStatement(sql);
+
+            //setando parametro ?;
+            statement.setLong(1, estado.getId());
+
+            //executando;
+            if (statement.executeUpdate() == 1){
+                System.out.println("Estado excluído com sucesso");
+            } else System.out.println("Nao foi possivel excluir o estado");
+
+
+        } catch (SQLException e) {
+            System.err.println("Nao foi possivel executar o comando SQL (excluir estado)");
+            System.out.println();
+        }
+        
     }
 
 }

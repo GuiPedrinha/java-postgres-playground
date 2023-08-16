@@ -36,15 +36,15 @@ public class AppBdclean {
 
             //populando obj estado e regiao;
             estado.setId(30L); //*obrigatorios diferentes e NAO AUTOINCREMENTA */
-            estado.setNome("Factorysss");//* obrigatorios diferentes*/
-            estado.setUf("FS");//* obrigatorios diferentes */
+            estado.setNome("Terragroup");//* obrigatorios diferentes*/
+            estado.setUf("TG");//* obrigatorios diferentes */
             estado.setRegiao(regiao);
             estado.setAreaKm2(2500);
             estado.setPopulacao(7);
 
-            estadoDAO.inserir(estado);
-            //estadoDAO.atualizar();
-            //estadoDAO.excluir();
+            //estadoDAO.inserir(estado);
+            //estadoDAO.alterar(estado);
+            estadoDAO.excluir(estado);
             //estadoDAO.listar();
             //estadoDAO.localizar("TO");
 
