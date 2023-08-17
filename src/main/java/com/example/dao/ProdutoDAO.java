@@ -2,7 +2,10 @@ package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
+import com.example.model.Marca;
 import com.example.model.Produto;
 
 public class ProdutoDAO {
@@ -85,6 +88,32 @@ public class ProdutoDAO {
 
         }
 
+    public List<Produto> listar() throws SQLException {
+        var lista = new LinkedList<Produto>();
+        var marcaDAO = new MarcaDAO(conn);
+        String sql = "SELECT * FROM produto";
+        // n vou usar ? entao createstatement normal;
+        //criar statement;
+        var statement = conn.createStatement();
+        //executastatement
+        var result = statement.executeQuery(sql);
+
+        while (result.next()) {
+            var produto = new Produto();
+            produto.setId(result.getLong("id"));
+            produto.setNome(result.getString("nome"));
+            produto.setMarca(marcaDAO.produraPorId(result.getLong("marca_id")));
+            produto.setValor(result.getDouble("valor"));
+            lista.add(produto);
+            }
+
+        // Produto [id=" + id + ", nome=" + nome + ", mar=" + marca + ", val=" + valor + "]"
+
+        return lista;
+        
+
+    } 
+ 
 
 
 

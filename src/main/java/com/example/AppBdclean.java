@@ -78,6 +78,11 @@ public class AppBdclean {
             produto.setNome("Escape from tarkov EOD");
             produto.setValor(850.00);
 
+            var lista = produtoDAO.listar();
+            for (Produto produtoLista : lista) {
+                System.out.println(produtoLista);
+            }
+
             // CRUD PRODUTO;
             //produtoDAO.inserir(produto);
             //produtoDAO.alterar(produto);

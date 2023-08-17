@@ -37,5 +37,9 @@ public class Produto {
     public void setValor(double d) {
         this.valor = d;
     }
+    @Override
+    public String toString() {
+        return "Produto [id=" + id + ", nome=" + nome + ", marca=" + marca + ", valor=" + valor + "]";
+    }
 
 }
