@@ -6,12 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 import com.example.model.Estado;
 
-public class EstadoDAO {
-    private Connection conn;
-
+public class EstadoDAO extends DAO{
     // construtor obrigando receber uma conexao pra instaciar um obj dessa classe;
+    // mas como extends de DAO entao esse paramentro conecction vem do DAO base/pai;
+    
     public EstadoDAO(Connection conn) {
-        this.conn = conn;
+        super(conn);
+        //TODO Auto-generated constructor stub
     }
 
     // metodos;

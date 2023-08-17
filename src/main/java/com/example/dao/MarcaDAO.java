@@ -7,14 +7,16 @@ import java.util.List;
 
 import com.example.model.Marca;
 
-public class MarcaDAO {
+public class MarcaDAO extends DAO{
     //atributos;
-    private Connection conn;
 
     //construtor;
-    public MarcaDAO(Connection conn){
-        this.conn = conn;
+    
+public MarcaDAO(Connection conn) {
+        super(conn);
+        //TODO Auto-generated constructor stub
     }
+
 
     //metodos;
     public Marca produraPorId(Long id) throws SQLException{

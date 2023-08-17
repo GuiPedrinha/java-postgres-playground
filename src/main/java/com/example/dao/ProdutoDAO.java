@@ -8,13 +8,13 @@ import java.util.List;
 import com.example.model.Marca;
 import com.example.model.Produto;
 
-public class ProdutoDAO {
+public class ProdutoDAO extends DAO{
     //atributos;
-    private Connection conn;
 
     //construtor;
     public ProdutoDAO(Connection conn) {
-        this.conn = conn;
+        super(conn);
+        //TODO Auto-generated constructor stub
     }
 
     //metodos;
