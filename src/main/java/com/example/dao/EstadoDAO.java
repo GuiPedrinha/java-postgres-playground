@@ -2,65 +2,65 @@ package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+import java.util.LinkedList;
+import java.util.List;
 import com.example.model.Estado;
 
 public class EstadoDAO {
     private Connection conn;
 
-    //construtor obrigando receber uma conexao pra instaciar um obj dessa classe;
+    // construtor obrigando receber uma conexao pra instaciar um obj dessa classe;
     public EstadoDAO(Connection conn) {
         this.conn = conn;
     }
 
-    //metodos;
-    public void listar() {
-
-        //inicializando statement. sem var agora pq var so intra bloco funciona;
-        try {
-            var statement = conn.createStatement();
-            var result = statement.executeQuery("select * from estado");
-            while (result.next()) {
-            System.out.printf("Id: %d Nome: %s UF: %s \n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
-            }
-            System.out.println();
-        //tratamento diferenciando erro de conexao com erro de sintaxe da consulta sql;    
-        } catch (SQLException e) {
-            System.err.println(" Erro ao realizar o comando query sql ");
-            //pode usar System.err.println pra mostrar a msg em vermelho de erro;
+    // metodos;
+    // retorna uma lista de objetos;
+    public List<Estado> listar() throws SQLException {
+        var lista = new LinkedList<Estado>();
+        // inicializando statement. sem var agora pq var so intra bloco funciona;
+        var statement = conn.createStatement();
+        var result = statement.executeQuery("select * from estado");
+        while (result.next()) {
+            // instaciar 1 estado para cada loop, por isso dentro;
+            var estado = new Estado();
+            estado.setId(result.getLong("id"));
+            estado.setNome(result.getString("nome"));
+            estado.setUf(result.getString("uf"));
+            lista.add(estado);
         }
+        return lista;
     }
 
-    public void localizar(String uf){
-        try {
-            String sql = "select * from estado where uf = ?";
-            // nao usa mais o createStatement, usar o prepareStatement pq recebe um sql como parametro;
-            var statement = conn.prepareStatement(sql);
-            //setString, pq uf é string, para atribuir o valor de ?;
-            // atribuindo a string uf para o parametro ? na posicao 1, que é o primeiro que aparece;
-            statement.setString(1, uf);
-            // usando prepareStatement o executeQuery nao recebe o sql nos parametros;
-            var result = statement.executeQuery();
-            System.out.printf("Query: %s \n", sql);
-            if(result.next()) {
-                System.out.printf("Estado localizado: id: %d nome: %s UF: %s \n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Comando SQL incorreto");
+    public Estado localizar(String uf) throws SQLException {
+        String sql = "select * from estado where uf = ?";
+        // nao usa mais o createStatement, usar o prepareStatement pq recebe um sql como
+        // parametro;
+        var statement = conn.prepareStatement(sql);
+        // setString, pq uf é string, para atribuir o valor de ?;
+        // atribuindo a string uf para o parametro ? na posicao 1, que é o primeiro que
+        // aparece;
+        statement.setString(1, uf);
+        // usando prepareStatement o executeQuery nao recebe o sql nos parametros;
+        var result = statement.executeQuery();
+        var estado = new Estado();
+        
+        if (result.next()) {
+            estado.setId(result.getLong("id"));
+            estado.setNome(result.getString("nome"));
+            estado.setUf(result.getString("uf"));
         }
-        // pulando linha;
-        System.out.println();
-
+        return estado;
     }
 
     public void inserir(Estado estado) {
         String sql = "INSERT INTO estado (id, nome, uf, regiao_id, area_km2, populacao) VALUES (?, ?, ?, ?, ?, ?)";
-        //usar preparestatement quando tiver parametros sql;
+        // usar preparestatement quando tiver parametros sql;
         try {
             var statement = conn.prepareStatement(sql);
-            //setando paramentros;
+            // setando paramentros;
             statement.setLong(1, estado.getId());
-            
+
             System.out.printf("%d", estado.getId());
             System.out.println();
 
@@ -84,12 +84,12 @@ public class EstadoDAO {
             System.out.printf("%d", estado.getPopulacao());
             System.out.println();
 
-
-            //rodar com executeUpdate pq é DML = insert, update, delete;
+            // rodar com executeUpdate pq é DML = insert, update, delete;
             // == 1 pq espera-se que apenas 1 linha seja modificada na tabela;
-            if(statement.executeUpdate() == 1){
+            if (statement.executeUpdate() == 1) {
                 System.out.println("Estado inserido com sucesso");
-            }else System.out.println("Nao foi possivel adicionar o estado");
+            } else
+                System.out.println("Nao foi possivel adicionar o estado");
 
         } catch (SQLException e) {
             System.err.println("Comando SQL incorreto (estado) ");
@@ -100,10 +100,10 @@ public class EstadoDAO {
     public void alterar(Estado estado) {
         String sql = "UPDATE estado SET nome = ?, uf = ?, regiao_id = ?, area_km2 = ?, populacao = ? WHERE id = ?";
         try {
-            //preparando statement;
+            // preparando statement;
             var statement = conn.prepareStatement(sql);
 
-            //setando parametros sql;
+            // setando parametros sql;
             statement.setString(1, estado.getNome());
             statement.setString(2, estado.getUf());
             statement.setLong(3, estado.getRegiao().getId());
@@ -111,11 +111,11 @@ public class EstadoDAO {
             statement.setInt(5, 5600);
             statement.setLong(6, estado.getId());
 
-            //executando;
-        if (statement.executeUpdate() == 1) {
-            System.out.println("Estado alterado com sucesso.");
-        } else System.out.println("O estado nao pode ser alterado");
-
+            // executando;
+            if (statement.executeUpdate() == 1) {
+                System.out.println("Estado alterado com sucesso.");
+            } else
+                System.out.println("O estado nao pode ser alterado");
 
         } catch (SQLException e) {
             System.err.println("Comando SQL incorreto (alterar estado)");
@@ -127,23 +127,23 @@ public class EstadoDAO {
         String sql = "DELETE FROM estado WHERE id = ?";
 
         try {
-            //preparar statement;
+            // preparar statement;
             var statement = conn.prepareStatement(sql);
 
-            //setando parametro ?;
+            // setando parametro ?;
             statement.setLong(1, estado.getId());
 
-            //executando;
-            if (statement.executeUpdate() == 1){
+            // executando;
+            if (statement.executeUpdate() == 1) {
                 System.out.println("Estado excluído com sucesso");
-            } else System.out.println("Nao foi possivel excluir o estado");
-
+            } else
+                System.out.println("Nao foi possivel excluir o estado");
 
         } catch (SQLException e) {
             System.err.println("Nao foi possivel executar o comando SQL (excluir estado)");
             System.out.println();
         }
-        
+
     }
 
 }

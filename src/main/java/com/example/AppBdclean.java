@@ -21,14 +21,15 @@ public class AppBdclean {
         new AppBdclean();
     }
 
+
     // tirar os statics, passar tudo pra uns constrututor pra fazer só 1 vez;
     // passando o tratamento da conexao tbm pra dentro do construtor;
     public AppBdclean(){
         try (var conn =  ConnectionManager.getConnection()){
             carregarDriverJDBC();
             
-            //CRUD ESTADO;
-            //instanciando objetos;
+            
+            //instanciando objetos estado;
             var estadoDAO = new EstadoDAO(conn);
             var estado = new Estado();
             var regiao = new RegiaoGeografica();
@@ -42,36 +43,50 @@ public class AppBdclean {
             estado.setAreaKm2(2500);
             estado.setPopulacao(7);
 
+            //CRUD ESTADO;
             //estadoDAO.inserir(estado);
             //estadoDAO.alterar(estado);
-            estadoDAO.excluir(estado);
-            //estadoDAO.listar();
-            //estadoDAO.localizar("TO");
+            //estadoDAO.excluir(estado);
+
+            // metodo lista popula objetos com dados da tabela e retorna uma lista;
+            var listaEstados = estadoDAO.listar();
+            //for each printa o obj pq tem toString no obj;
+            for (var estadoObjeto : listaEstados) {
+                System.out.println(estadoObjeto);
+            }
+
+            // pular linha terminal;
+            System.out.println();
+
+            var estadoLocalizado = estadoDAO.localizar("TO");
+            System.out.println("Estado localizado com sucesso: " + estadoLocalizado);
 
 
+            /* - - - - - - - - -  */
 
-            // CRUD PRODUTO;
-            //inserir produto na tabela;
+
+            
             //instanciando as classes produto e marca;
             var marca = new Marca();
-            // vai ser da marca de id 1;
             marca.setId(3L); //L so pra dizer que n é int, é Long; n precisa nome pra add na tabela produto;
-
             var produto = new Produto();
+            var produtoDAO = new ProdutoDAO(conn);
+
+            //populando;
             //produto.setId(206L);
             produto.setMarca(marca);
             produto.setNome("Escape from tarkov EOD");
             produto.setValor(850.00);
 
-            var produtoDAO = new ProdutoDAO(conn);
+            // CRUD PRODUTO;
             //produtoDAO.inserir(produto);
             //produtoDAO.alterar(produto);
             //produtoDAO.excluir(208L);
-            //listando colunas da tabela cliente;
+
             
             //DAO GERNERICO;
             var dao = new DAO(conn);
-            dao.listarDadosTabela("estado");
+            //dao.listarDadosTabela("estado");
             //dao.listarTabelas();
 
         } catch (SQLException e) {
@@ -80,6 +95,8 @@ public class AppBdclean {
                 System.err.println(" Nao foi possivel conectar ao banco de dados " + e.getMessage());
         }
     }
+
+
 
 
     private void carregarDriverJDBC() {

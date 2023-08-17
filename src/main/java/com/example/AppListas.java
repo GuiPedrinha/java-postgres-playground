@@ -1,6 +1,7 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.example.model.Cliente;
@@ -14,6 +15,8 @@ public class AppListas {
         //sintaxe listas; inicializa com o tipo Arraylist e nao List();
         //diferente de vetores, as listas podem ter seu tamanho modificado;
         List<Cliente> listaClientes = new ArrayList<>();
+
+        var lista = new LinkedList<>();
 
         Cliente cliente1 = new Cliente();
         cliente1.setNome("Carlos");
