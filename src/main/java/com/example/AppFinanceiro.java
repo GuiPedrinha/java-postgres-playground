@@ -20,15 +20,25 @@ public class AppFinanceiro {
         try (var conn = ConnectionManagerFinanceiro.getConnection()) {
             //criando nova transacao;
             var transacaoDAO = new TransacaoDAO(conn);
-            var transacao = new Transacao();
-            transacao.setCliente("Guilherme Furtado");
-            transacao.setValor(350.00);
-            transacao.setMoeda("BRL");
-            transacao.setTipo("t");
+            var transacao = new Transacao("Bruna chata linda", 20.00, "BRL", "t");
             
             System.out.println("\n Conexao criado com sucesso \n");
+
             // CRUD transacao;
-            transacaoDAO.inserir(transacao);
+            //transacaoDAO.inserir(transacao);
+
+             
+            var listaPorCliente = transacaoDAO.listarPorCliente("Bruna chata linda");
+
+            //visualiza lista filtrada por clientes;
+            for (Transacao transacoesCliente : listaPorCliente) {
+                System.out.println(transacoesCliente);
+            }
+            
+
+
+            //var listaPorTipo = transacaoDAO.listarPorTipo("t");
+
 
 
 

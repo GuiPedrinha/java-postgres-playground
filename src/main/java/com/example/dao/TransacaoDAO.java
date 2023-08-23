@@ -2,6 +2,8 @@ package com.example.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.example.model.Transacao;
 
@@ -35,5 +37,41 @@ public class TransacaoDAO {
         
         
 
+    }
+
+    public List<Transacao> listarPorCliente(String cliente) {
+        var listaPorCliente = new LinkedList<Transacao>();
+        //consulta sql;
+        String sql = "SELECT * FROM transacao WHERE cliente = ?";
+    
+        try {
+            //preparar statement;
+            var statement = conn.prepareStatement(sql);
+
+            //setar parametro;
+            statement.setString(1, cliente);
+
+            //executar consulta;
+            var result = statement.executeQuery();
+
+            //criando lista de objetos;
+            while (result.next()) {
+                var transacao = new Transacao(
+                    result.getString("cliente"),
+                    result.getDouble("valor"),
+                    result.getString("moeda"),
+                    result.getString("tipo")
+                    );
+                transacao.setId(result.getInt("id_transacao"));
+                listaPorCliente.add(transacao);  
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Nao foi possivel listar transacoes por cliente.");
+        }
+        return listaPorCliente;
+    }
+
+    public void listarPorTipo(String string) {
     }
 }
