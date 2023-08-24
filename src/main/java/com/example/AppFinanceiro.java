@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.example.dao.ConnectionManagerFinanceiro;
 import com.example.dao.TransacaoDAO;
 import com.example.model.ConversorMoeda;
+import com.example.model.CurrencyApi;
 import com.example.model.Transacao;
 
 public class AppFinanceiro {
@@ -54,6 +55,11 @@ public class AppFinanceiro {
             var conversorDeMoeda = new ConversorMoeda();
             var valorConvertido = conversorDeMoeda.cambioReal(230.00, "USD");
             System.out.printf("\n Resultado do cambio de moeda: %.2f \n\n", valorConvertido);
+
+            //DEVOLVE APENAS O CAMBIO com o metodo static getQuote(from, to);
+            System.out.printf("\n A cotacao é de: %.2f \n\n", CurrencyApi.getQuote("USD", "BRL"));
+            
+
 
         } catch (SQLException e) {
             System.err.println("\n Nao foi possivel criar uma conexao com o Bando de dados." + e + "\n");
