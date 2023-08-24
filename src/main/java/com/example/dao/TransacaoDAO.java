@@ -72,6 +72,40 @@ public class TransacaoDAO {
         return listaPorCliente;
     }
 
-    public void listarPorTipo(String string) {
+
+
+    public List<Transacao> listarPorTipo(String tipo) {
+
+        var listaPorTipo = new LinkedList<Transacao>();
+        //consulta sql;
+        String sql = "SELECT * FROM transacao WHERE tipo = ?";
+    
+        try {
+            //preparar statement;
+            var statement = conn.prepareStatement(sql);
+
+            //setar parametro;
+            statement.setString(1, tipo);
+
+            //executar consulta;
+            var result = statement.executeQuery();
+
+            //criando lista de objetos;
+            while (result.next()) {
+                var transacao = new Transacao(
+                    result.getString("cliente"),
+                    result.getDouble("valor"),
+                    result.getString("moeda"),
+                    result.getString("tipo")
+                    );
+                transacao.setId(result.getInt("id_transacao"));
+                listaPorTipo.add(transacao);  
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Nao foi possivel listar transacoes por cliente.");
+        }
+        return listaPorTipo;
     }
+    
 }

@@ -27,17 +27,22 @@ public class AppFinanceiro {
             // CRUD transacao;
             //transacaoDAO.inserir(transacao);
 
-             
             var listaPorCliente = transacaoDAO.listarPorCliente("Bruna chata linda");
-
             //visualiza lista filtrada por clientes;
+            System.out.println("\n Listando por cliente:");
             for (Transacao transacoesCliente : listaPorCliente) {
                 System.out.println(transacoesCliente);
             }
-            
 
 
-            //var listaPorTipo = transacaoDAO.listarPorTipo("t");
+            var listaPorTipo = transacaoDAO.listarPorTipo("t");
+
+            //visualiza lista filtrada por tipo;
+            System.out.println("\n Listando por tipo de transacao:");
+            for (Transacao transacoesTipo : listaPorTipo) {
+                System.out.println(transacoesTipo);
+            }
+
 
 
 
