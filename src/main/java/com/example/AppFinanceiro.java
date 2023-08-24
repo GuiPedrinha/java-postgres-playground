@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import com.example.dao.ConnectionManagerFinanceiro;
 import com.example.dao.TransacaoDAO;
+import com.example.model.ConversorMoeda;
 import com.example.model.Transacao;
 
 public class AppFinanceiro {
@@ -25,8 +26,10 @@ public class AppFinanceiro {
             System.out.println("\n Conexao criado com sucesso \n");
 
             // CRUD transacao;
+            //INSERIR;
             //transacaoDAO.inserir(transacao);
 
+            //LISTAR;
             var listaPorCliente = transacaoDAO.listarPorCliente("Bruna chata linda");
             //visualiza lista filtrada por clientes;
             System.out.println("\n Listando por cliente:");
@@ -34,18 +37,23 @@ public class AppFinanceiro {
                 System.out.println(transacoesCliente);
             }
 
-
             var listaPorTipo = transacaoDAO.listarPorTipo("t");
-
             //visualiza lista filtrada por tipo;
             System.out.println("\n Listando por tipo de transacao:");
             for (Transacao transacoesTipo : listaPorTipo) {
                 System.out.println(transacoesTipo);
             }
 
+            //ATUALIZAR;
 
+            //EXCLUIR;
 
+            System.out.println();
 
+            //CAMBIO DE MOEDAS;
+            var conversorDeMoeda = new ConversorMoeda();
+            var valorConvertido = conversorDeMoeda.cambioReal(230.00, "USD");
+            System.out.printf("\n Resultado do cambio de moeda: %.2f \n\n", valorConvertido);
 
         } catch (SQLException e) {
             System.err.println("\n Nao foi possivel criar uma conexao com o Bando de dados." + e + "\n");
