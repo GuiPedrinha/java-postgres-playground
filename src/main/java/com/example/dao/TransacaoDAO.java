@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.example.model.CurrencyApi;
 import com.example.model.Transacao;
 
 public class TransacaoDAO {
@@ -106,6 +107,25 @@ public class TransacaoDAO {
             System.err.println("Nao foi possivel listar transacoes por cliente.");
         }
         return listaPorTipo;
+    }
+
+    public double getSaldo(String cliente) {
+        double saldo = 0.0;
+        double valor = 0.0;
+        var listaTransacoes = listarPorCliente(cliente);
+        for (Transacao transacao : listaTransacoes) {
+            int sinal = transacao.getTipo().equals("d") ? 1 : -1;
+
+            if (!transacao.getMoeda().equals("BRL")) {
+                valor = transacao.getValor() * CurrencyApi.getQuote(transacao.getMoeda(), "BRL");
+                System.out.printf("o valor do cambio utilizado foi de: %.2f \n", CurrencyApi.getQuote(transacao.getMoeda(), "BRL"));
+            }else valor = transacao.getValor();
+
+            System.out.println(transacao);
+            saldo = saldo + (sinal * valor);
+        }
+
+        return saldo;
     }
     
 }
