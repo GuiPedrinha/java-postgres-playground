@@ -26,7 +26,7 @@ public class AppBdclean {
     // passando o tratamento da conexao tbm pra dentro do construtor;
     public AppBdclean(){
         try (var conn =  ConnectionManager.getConnection()){
-            carregarDriverJDBC();
+            //carregarDriverJDBC();
             
             
             //instanciando objetos estado;
