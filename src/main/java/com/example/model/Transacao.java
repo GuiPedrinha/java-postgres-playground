@@ -1,5 +1,6 @@
 package com.example.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ public class Transacao {
     private double valor;
     private String moeda;
     private String tipo;
+    private LocalDateTime datahora;
+    private boolean suspeito;
 
     public Transacao(String cliente, double valor, String moeda, String tipo) {
         this.cliente = cliente;
@@ -55,6 +58,14 @@ public class Transacao {
 
     public Integer getId() {
         return id;
+    }
+
+    public LocalDateTime getDatahora() {
+        return datahora;
+    }
+
+    public boolean isSuspeito() {
+        return suspeito;
     }
 
     public void setId(Integer id) {
